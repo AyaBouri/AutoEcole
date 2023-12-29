@@ -31,6 +31,8 @@ public class User {
     @NotBlank(message = "Le champ CIN ne peut pas être vide")
     @ValidCin
     private String CIN;
+    @Column(name = "email")
+    private String email;
     //Getter & Setters
     //id
     public Long getUserId(){
@@ -72,5 +74,12 @@ public class User {
     }
     public void setCIN(String CIN){
         this.CIN=CIN;
+    }
+    //email
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.email=email;
     }
 }
