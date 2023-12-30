@@ -1,13 +1,17 @@
 package com.example.demo.Model;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.example.demo.Entity.Inscription;
+import com.example.demo.Entity.Message;
 import com.example.demo.Model.Validation.ValidCin;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -33,6 +37,8 @@ public class User {
     private String CIN;
     @Column(name = "email")
     private String email;
+    @OneToMany(mappedBy = "messageid")
+    private java.util.List<Message> message;
     //Getter & Setters
     //id
     public Long getUserId(){
@@ -81,5 +87,12 @@ public class User {
     }
     public void setEmail(String email){
         this.email=email;
+    }
+    //Message
+    public List<Message> getMessage(){
+        return message;
+    }
+    public void setMessage(List<Message> messages){
+        this.message=messages;
     }
 }
