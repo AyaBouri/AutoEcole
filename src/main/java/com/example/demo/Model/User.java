@@ -3,10 +3,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
-
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.Entity.Inscription;
@@ -21,6 +18,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import java.io.File;
+import java.io.FileOutputStream;
 @Table(name = "user")
 @Entity
 @Component
@@ -121,17 +120,53 @@ public class User {
         return period.getYears();
     }
     //enregistrer photo
+    public void save(User user,Multipart photo){
+        this.save(user,photo);
+        //enregistrer la photo
+        String fileName=((MultipartFile) photo).getOriginalFilename();
+        try {
+            byte[] bytes=((MultipartFile) photo).getBytes();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String uploadDir="upload";
+        File dir=new File(uploadDir);
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        File file=new File(dir,fileName);
+        try{
+            file.createNewFile();
+            FileOutputStream fos=new FileOutputStream(file);
+            fos.write(bytes);
+            fos.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        user.setPhoto(fileName);
+    }
 }
 /**
- * public void save(Moniteur moniteur, MultipartFile photo) {
+public void save(Moniteur moniteur, MultipartFile photo) {
     // Enregistrer le Moniteur
     this.save(moniteur);
 
     // Enregistrer la photo
     String fileName = photo.getOriginalFilename();
-    Path filePath = Paths.get("uploads", fileName);
+    byte[] bytes = photo.getBytes();
+    String uploadsDir = "uploads";
+    File dir = new File(uploadsDir);
+    if (!dir.exists()) {
+        dir.mkdir();
+    }
+    File file = new File(dir, fileName);
     try {
-        photo.transferTo(filePath);
+        file.createNewFile();
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(bytes);
+        fos.close();
     } catch (IOException e) {
         // Gérer l'erreur
     }
