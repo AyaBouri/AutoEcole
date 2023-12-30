@@ -2,10 +2,10 @@ package com.example.demo.Model;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.example.demo.Entity.Inscription;
+import com.example.demo.Entity.Login;
 import com.example.demo.Entity.Message;
 import com.example.demo.Model.Validation.ValidCin;
 import jakarta.persistence.Column;
@@ -39,6 +39,8 @@ public class User {
     private String email;
     @OneToMany(mappedBy = "messageid")
     private java.util.List<Message> message;
+    @OneToOne
+    private Login login;
     //Getter & Setters
     //id
     public Long getUserId(){
@@ -94,5 +96,12 @@ public class User {
     }
     public void setMessage(List<Message> messages){
         this.message=messages;
+    }
+    //login
+    public Login getLogin(){
+        return login;
+    }
+    public void setLogin(Login login){
+        this.login=login;
     }
 }
