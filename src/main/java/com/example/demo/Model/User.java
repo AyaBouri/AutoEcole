@@ -3,11 +3,17 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.Entity.Inscription;
 import com.example.demo.Entity.Login;
 import com.example.demo.Entity.Message;
 import com.example.demo.Model.Validation.ValidCin;
+import jakarta.mail.Multipart;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -41,6 +47,8 @@ public class User {
     private java.util.List<Message> message;
     @OneToOne
     private Login login;
+    @Column(name = "photo")
+    private MultipartFile photo;
     //Getter & Setters
     //id
     public Long getUserId(){
@@ -70,12 +78,6 @@ public class User {
     public void setBirthday(LocalDate dateNaissance){
         this.date_naissance=dateNaissance;
     }
-    //Fonction
-    public int calculerAge(){
-        LocalDate currentDate=LocalDate.now();
-        Period period=Period.between(date_naissance, currentDate);
-        return period.getYears();
-    }
     //CIN
     public String getCIN(){
         return CIN;
@@ -104,4 +106,37 @@ public class User {
     public void setLogin(Login login){
         this.login=login;
     }
+    //photo 
+    public MultipartFile getPhoto(){
+        return photo;
+    }
+    public void setPhoto(MultipartFile photo){
+        this.photo=photo;
+    }
+    //Fonction
+    //Calculer Age
+    public int calculerAge(){
+        LocalDate currentDate=LocalDate.now();
+        Period period=Period.between(date_naissance, currentDate);
+        return period.getYears();
+    }
+    //enregistrer photo
 }
+/**
+ * public void save(Moniteur moniteur, MultipartFile photo) {
+    // Enregistrer le Moniteur
+    this.save(moniteur);
+
+    // Enregistrer la photo
+    String fileName = photo.getOriginalFilename();
+    Path filePath = Paths.get("uploads", fileName);
+    try {
+        photo.transferTo(filePath);
+    } catch (IOException e) {
+        // Gérer l'erreur
+    }
+
+    // Mettre à jour le Moniteur avec le nom de la photo
+    moniteur.setPhoto(fileName);
+}
+ */
