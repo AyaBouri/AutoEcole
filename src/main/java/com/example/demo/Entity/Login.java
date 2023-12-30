@@ -18,7 +18,16 @@ public class Login {
     private String password;
     @OneToMany(mappedBy = "userid")
     private List<User> users; 
+    @Column(name = "username")
+    private String username;
     //getter and setter
+    //username
+    public String getusername(){
+        return username;
+    }
+    public void setusername(String username){
+        this.username=username;
+    }
     //login id
     public Long getLoginId(){
         return loginid;
